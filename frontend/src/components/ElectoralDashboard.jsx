@@ -9,6 +9,7 @@ import {
   RefreshCw, AlertTriangle, ChevronRight, Info,
 } from "lucide-react";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const FACTOR_ICONS = {
@@ -228,7 +229,8 @@ export default function ElectoralDashboard() {
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/api/elections");
+      // Replaced the hardcoded string with the dynamic URL
+      const res = await axios.get(`${API_BASE_URL}/elections`);
       setData(res.data);
       setSimScores(res.data.candidates.map((c) => ({ ...c.scores })));
       setError(null);
@@ -251,7 +253,8 @@ export default function ElectoralDashboard() {
           params[`${factor}_${idx}`] = val;
         });
       });
-      const res = await axios.get("/api/elections/simulate", { params });
+      // Replaced the hardcoded string with the dynamic URL
+      const res = await axios.get(`${API_BASE_URL}/elections/simulate`, { params });
       setSimResult(res.data);
     } catch (e) {
       console.error("Simulation error:", e);
