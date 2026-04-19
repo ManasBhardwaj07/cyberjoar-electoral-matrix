@@ -68,6 +68,12 @@ GET /api/elections/simulate?digitalSentiment_1=95&partyStrength_0=40
 ```
 Overrides base scores and re-runs the full algorithm. Returns updated PoW + radarData.
 
+## Live Deployment
+
+> **🔴 LIVE DEMO:** [Click here to view the deployed dashboard](https://cyberjoar-electoral-matrix.vercel.app/)
+> 
+> *Note: The backend API is hosted on Render's free tier. It may take 30–50 seconds to spin up on the initial load.*
+
 ---
 
 ## Local Setup
