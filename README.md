@@ -1,6 +1,6 @@
-# CyberJoar — Predictive Electoral Analytics Dashboard
+# PulseMatrix — Predictive Electoral Analytics Platform
 
-CyberJoar is a full-stack predictive analytics platform that models electoral outcomes across multiple candidates using weighted intelligence factors, server-side probability computation, and interactive what-if simulation.
+PulseMatrix is a full-stack predictive analytics platform that models electoral outcomes across multiple candidates using weighted intelligence factors, server-side probability computation, and interactive what-if simulation.
 
 The platform combines analytical dashboards, live scenario recomputation, and visualization-driven decision modelling through a custom probability engine powered by temperature-scaled Softmax scoring.
 
@@ -111,6 +111,22 @@ Interactive constituency-weight visualization with sum validation.
 
 ---
 
+## System Flow
+
+```text
+Client Dashboard
+        ↓
+Express API Layer
+        ↓
+Probability Engine
+        ↓
+Softmax Computation
+        ↓
+Radar & Comparative Analytics
+```
+
+---
+
 ## Live Deployment
 
 🔴 LIVE DEMO:  
@@ -133,7 +149,9 @@ https://cyberjoar-electoral-matrix.vercel.app/
 
 ```bash
 cd backend
+
 npm install
+
 npm run dev
 ```
 
@@ -149,7 +167,9 @@ http://localhost:5001
 
 ```bash
 cd frontend
+
 npm install
+
 npm run dev
 ```
 
@@ -194,7 +214,7 @@ http://localhost:5173
 ## Project Structure
 
 ```text
-cyberjoar-electoral-dashboard/
+pulsematrix/
 ├── backend/
 │   ├── routes/
 │   │   └── elections.js
@@ -230,7 +250,7 @@ cyberjoar-electoral-dashboard/
 
 ## Summary
 
-CyberJoar demonstrates:
+PulseMatrix demonstrates:
 
 - analytical dashboard engineering
 - simulation-driven full stack architecture
