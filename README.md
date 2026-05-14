@@ -1,9 +1,8 @@
-# ⬛ CyberJoar — Predictive Electoral Analytics Dashboard
+# CyberJoar — Predictive Electoral Analytics Dashboard
 
-> **Problem Statement 5 — Standalone** — A full-stack MERN application that compares
-> three candidates across a six-factor weighted intelligence matrix, computes their
-> Probability of Win via a server-side Softmax algorithm, and provides an interactive
-> Scenario Simulator for live what-if modelling.
+CyberJoar is a full-stack predictive analytics platform that models electoral outcomes across multiple candidates using weighted intelligence factors, server-side probability computation, and interactive what-if simulation.
+
+The platform combines analytical dashboards, live scenario recomputation, and visualization-driven decision modelling through a custom probability engine powered by temperature-scaled Softmax scoring.
 
 [![React](https://img.shields.io/badge/React-18.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
@@ -12,104 +11,153 @@
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-> No MongoDB. No AWS. No map. Pure algorithm and data visualisation.
-
 ---
 
 ## Features
 
-- **Candidate Cards** — Three candidates (Incumbent, Challenger, Independent) with animated
-  count-up PoW gauges, per-factor score bars, and profile metadata
-- **Radar Chart** — All 6 matrix factors overlaid for all 3 candidates simultaneously
-- **Bar Chart** — Side-by-side Probability of Win with per-candidate colour coding and
-  custom tooltips
-- **Strategic Gap Table** — Per-factor leader identification with inline mini progress bars
-- **Scenario Simulator** — Adjust any score via sliders, hit RUN, and see recomputed PoW
-  deltas and an updated Radar chart via a live API call
-- **Weight Config Tab** — Visual breakdown of all 6 constituency-tuned weights with
-  sum-to-100% verification
-- **Dark Tactical UI** — Monospaced fonts, navy palette, violet accents
+- Multi-candidate weighted probability modelling
+- Server-side temperature-scaled Softmax computation engine
+- Real-time scenario simulation via live API recomputation
+- Interactive radar and comparative analytics visualizations
+- Constituency-weight configuration system with validation logic
+- Strategic factor-gap analysis across competing candidates
+- Live probability delta recalculation through simulator controls
+- Responsive tactical dashboard interface with analytical dark UI
 
 ---
 
-## Candidate Matrix
+## Candidate Intelligence Matrix
 
 | Factor | Weight | Description |
 |---|---|---|
 | Incumbency Effect | 15% | Office advantage or anti-incumbency drag |
 | Party Strength | 25% | Cadre network and brand recognition |
-| Past Work Record | 20% | Verified legislative and development activity |
+| Past Work Record | 20% | Legislative and development activity |
 | Personal Base | 15% | Loyal vote bank independent of party |
-| Demographic Base | 10% | Religious and community-consolidated vote share |
-| Digital Sentiment | 15% | Net OSINT social media and news sentiment score |
+| Demographic Base | 10% | Community-consolidated voter alignment |
+| Digital Sentiment | 15% | Social media and news sentiment score |
 
 ---
 
-## Algorithm — Probability of Win
+## Probability Engine
 
-**Step 1 — Weighted Score**
-```
-rawScore(c) = Σ ( score[factor] × weight[factor] )   for all 6 factors
-```
+### Weighted Score Computation
 
-**Step 2 — Temperature-Scaled Softmax (T = 0.8)**
-```
-exp_i  = e ^ ( rawScore_i / 0.8 )
-PoW(i) = exp_i / Σ exp_j           (zero-sum, all candidates)
+```math
+rawScore(c) = \sum(score_i \times weight_i)
 ```
 
-**Step 3 — Turnout Bonus**
+### Temperature-Scaled Softmax
 
-Candidates with `personalBase ≥ 80` receive `+4%`. Final pass guarantees `Σ PoW = 100%`.
-
-**Simulation**
+```math
+P(c_i) = \frac{e^{rawScore_i / T}}{\sum e^{rawScore_j / T}}
 ```
+
+Where:
+
+- `T = 0.8`
+- all candidate probabilities normalize to 100%
+- higher weighted factor alignment increases overall probability of win
+
+### Turnout Bonus Logic
+
+Candidates with:
+
+```text
+personalBase ≥ 80
+```
+
+receive a strategic turnout bonus adjustment before final normalization.
+
+---
+
+## Live Simulation Engine
+
+The simulation engine supports live recomputation of Probability of Win values through API-driven score overrides.
+
+Example:
+
+```http
 GET /api/elections/simulate?digitalSentiment_1=95&partyStrength_0=40
 ```
-Overrides base scores and re-runs the full algorithm. Returns updated PoW + radarData.
+
+The backend recalculates:
+
+- weighted scores
+- Softmax probabilities
+- radar visualization data
+- comparative deltas
+
+in real time.
+
+---
+
+## Visual Analytics
+
+### Candidate Cards
+Animated Probability-of-Win gauges with factor breakdowns and candidate metadata.
+
+### Radar Analytics
+Overlay comparison of all six intelligence factors across candidates.
+
+### Comparative Probability Charts
+Side-by-side probability visualization with custom tooltip insights.
+
+### Strategic Gap Analysis
+Per-factor leader identification with visual comparative indicators.
+
+### Weight Configuration Panel
+Interactive constituency-weight visualization with sum validation.
+
+---
 
 ## Live Deployment
 
-> **🔴 LIVE DEMO:** [Click here to view the deployed dashboard](https://cyberjoar-electoral-matrix.vercel.app/)
-> 
-> *Note: The backend API is hosted on Render's free tier. It may take 30–50 seconds to spin up on the initial load.*
+🔴 LIVE DEMO:  
+https://cyberjoar-electoral-matrix.vercel.app/
+
+> Backend API is hosted on Render free tier and may require initial cold-start spin-up time.
 
 ---
 
 ## Local Setup
 
 ### Prerequisites
+
 - Node.js v18+
 - npm v9+
 
-### 1. Backend
+---
+
+## Backend
 
 ```bash
 cd backend
 npm install
-npm run dev        # starts on http://localhost:5001
+npm run dev
 ```
 
-Expected output:
-```
-╔══════════════════════════════════════════════════════╗
-║  CYBERJOAR — ELECTORAL ANALYTICS  |  PORT 5001      ║
-║  GET  /api/elections                                 ║
-║  GET  /api/elections/simulate?factor_idx=value       ║
-║  GET  /api/health                                    ║
-╚══════════════════════════════════════════════════════╝
+Runs on:
+
+```text
+http://localhost:5001
 ```
 
-### 2. Frontend
+---
+
+## Frontend
 
 ```bash
-# New terminal
 cd frontend
 npm install
-npm run dev        # starts on http://localhost:5173
+npm run dev
 ```
 
-Open **http://localhost:5173**
+Runs on:
+
+```text
+http://localhost:5173
+```
 
 ---
 
@@ -117,37 +165,76 @@ Open **http://localhost:5173**
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/health` | Status check |
-| `GET` | `/api/elections` | All candidates + PoW + `radarData` + `barData` |
-| `GET` | `/api/elections/simulate` | What-if recomputation via `factor_idx=value` query params |
+| `GET` | `/api/health` | Health status |
+| `GET` | `/api/elections` | Candidate matrix + computed probabilities |
+| `GET` | `/api/elections/simulate` | Live scenario recomputation |
+
+---
+
+## Tech Stack
+
+### Frontend
+- React
+- Vite
+- TailwindCSS
+- Recharts
+
+### Backend
+- Node.js
+- Express
+
+### Visualization & Analytics
+- Radar Charts
+- Comparative Probability Graphs
+- Simulation Engine
+- Weighted Modelling
 
 ---
 
 ## Project Structure
 
-```
-cyberjoar-electoral-standalone/
+```text
+cyberjoar-electoral-dashboard/
 ├── backend/
 │   ├── routes/
-│   │   └── elections.js    # All candidates, weights, PoW algorithm, /simulate
+│   │   └── elections.js
 │   ├── .env.example
-│   ├── package.json        # Only: express, cors, dotenv
-│   └── server.js           # Mounts /api/elections only
+│   ├── package.json
+│   └── server.js
+│
 └── frontend/
     ├── src/
     │   ├── components/
-    │   │   └── ElectoralDashboard.jsx  # All UI: cards, charts, simulator, weights
-    │   ├── App.jsx                     # Renders ElectoralDashboard directly
+    │   ├── App.jsx
     │   ├── main.jsx
     │   └── index.css
-    ├── index.html
-    ├── vite.config.js       # /api proxy → :5001
+    │
+    ├── vite.config.js
     ├── tailwind.config.js
-    └── package.json         # Only: react, recharts, lucide-react, axios
+    └── package.json
 ```
 
 ---
 
-## License
+## Key Engineering Concepts
 
-MIT — Built for the CyberJoar Hiring Assessment
+- weighted analytical modelling
+- server-side probability computation
+- temperature-scaled Softmax normalization
+- real-time API-driven simulation
+- interactive data visualization
+- tactical analytics dashboards
+- scalable frontend state orchestration
+
+---
+
+## Summary
+
+CyberJoar demonstrates:
+
+- analytical dashboard engineering
+- simulation-driven full stack architecture
+- probability modelling systems
+- visualization-oriented frontend engineering
+- API-driven recomputation workflows
+- interactive decision-support interfaces
